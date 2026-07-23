@@ -1,1 +1,217 @@
+// Canvas
+const canvas = document.getElementById("radar");
+const ctx = canvas.getContext("2d");
+
+// Radar Size
+const RADAR_RADIUS = 380;
+const MAX_RANGE = 60;
+const PIXELS_PER_NM = RADAR_RADIUS / MAX_RANGE;
+
+function nm(value){
+    return value * PIXELS_PER_NM;
+}
+// CCB VOR
+const CCB = {
+    x: CENTER_X,
+    y: CENTER_Y + 3
+};
+const ROUTES = [
+
+    {name:"B425", bearing:190},
+    {name:"W14", bearing:350},
+    {name:"R416", bearing:70},
+    {name:"Q1", bearing:252},
+    {name:"Q2", bearing:270},
+    {name:"G473 NW", bearing:300},
+    {name:"G473 SE", bearing:120}
+
+];
+
+function bearingToXY(bearing, distance){
+
+    const angle = (bearing - 90) * Math.PI / 180;
+
+    const scale = RADAR_RADIUS / MAX_RANGE;
+
+    return {
+
+        x: CCB.x + Math.cos(angle) * distance * scale,
+
+        y: CCB.y + Math.sin(angle) * distance * scale
+
+    };
+
+}
+
+// ======================================
+// Radar Background
+// ======================================
+
+function drawBackground(){
+
+    ctx.fillStyle = BG_COLOR;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.strokeStyle = RING_COLOR;
+    ctx.lineWidth = 1;
+
+    for(let i=10;i<=60;i+=10){
+
+        ctx.beginPath();
+
+        ctx.arc(
+            CCB.x,
+            CCB.y,
+            i * RADAR_RADIUS / MAX_RANGE,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.stroke();
+
+    }
+}
+
+function drawRunway(){
+
+    const p1 = bearingToXY(260,10);
+    const p2 = bearingToXY(80,10);
+
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.lineWidth = 4;
+
+    ctx.beginPath();
+    ctx.moveTo(p1.x,p1.y);
+    ctx.lineTo(p2.x,p2.y);
+    ctx.stroke();
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "16px Arial";
+
+    ctx.fillText("08",p1.x-22,p1.y+8);
+    ctx.fillText("26",p2.x+8,p2.y+8);
+
+}
+
+
+function drawCentreline(){
+
+    const start = bearingToXY(260,15);
+    const end   = bearingToXY(80,15);
+
+    ctx.save();
+
+    ctx.strokeStyle="#FFFF00";
+    ctx.lineWidth=2;
+    ctx.setLineDash([10,6]);
+
+    ctx.beginPath();
+    ctx.moveTo(start.x,start.y);
+    ctx.lineTo(end.x,end.y);
+    ctx.stroke();
+
+    ctx.restore();
+
+}
+
+function drawTrafficCircuit(){
+    const end08 = bearingToXY(260,12);
+    const end26 = bearingToXY(80,12);
+    const dx = end26.x - end08.x;
+    const dy = end26.y - end08.y;
+    const len = Math.sqrt(dx*dx + dy*dy);
+
+    const px = -dy / len;
+    const py = dx / len;
+
+    const offset = nm(5);
+
+    const top08 = {
+        x:end08.x + px*offset,
+        y:end08.y + py*offset
+    };
+
+    const top26 = {
+        x:end26.x + px*offset,
+        y:end26.y + py*offset
+    };
+
+    const bot08 = {
+        x:end08.x - px*offset,
+        y:end08.y - py*offset
+    };
+
+    const bot26 = {
+        x:end26.x - px*offset,
+        y:end26.y - py*offset
+    };
+
+    ctx.strokeStyle="#FFFF00";
+    ctx.lineWidth=2;
+
+    // Upper box
+    ctx.beginPath();
+    ctx.moveTo(end08.x,end08.y);
+    ctx.lineTo(top08.x,top08.y);
+    ctx.lineTo(top26.x,top26.y);
+    ctx.lineTo(end26.x,end26.y);
+    ctx.stroke();
+
+    // Lower box
+    ctx.beginPath();
+    ctx.moveTo(end08.x,end08.y);
+    ctx.lineTo(bot08.x,bot08.y);
+    ctx.lineTo(bot26.x,bot26.y);
+    ctx.lineTo(end26.x,end26.y);
+    ctx.stroke();
+
+}
+
+function drawCCB(){
+
+    ctx.beginPath();
+    ctx.arc(CCB.x,CCB.y,4,0,Math.PI*2);
+
+    ctx.fillStyle="#00FFFF";
+    ctx.fill();
+
+    ctx.font="16px Arial";
+    ctx.fillStyle="#00FFFF";
+
+    ctx.fillText("CCB",CCB.x+8,CCB.y-8);
+
+}
+
+// ======================================
+// Draw ATS Routes
+// ======================================
+
+function drawRoutes(){
+
+    ctx.strokeStyle=ROUTE_COLOR;
+    ctx.lineWidth=2;
+
+    ROUTES.forEach(route=>{
+
+        const end = bearingToXY(route.bearing,60);
+
+        ctx.beginPath();
+        ctx.moveTo(CCB.x,CCB.y);
+        ctx.lineTo(end.x,end.y);
+        ctx.stroke();
+
+        const label = bearingToXY(route.bearing,56);
+
+        ctx.fillStyle = TEXT_COLOR;
+        ctx.font = "15px Consolas";
+
+        ctx.fillText(
+            route.name,
+            label.x-15,
+            label.y
+        );
+
+    });
+
+}
 
