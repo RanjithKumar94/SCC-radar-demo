@@ -1,20 +1,32 @@
-
 body{
 
-    margin:0;
     background:#001100;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    color:#00ff66;
 
-    height:100vh;
+    font-family:Arial;
 
 }
 
 
-canvas{
+#layout{
 
-    border:2px solid #00aa44;
+    display:flex;
+
+}
+
+
+#panel{
+
+    padding:20px;
+
+}
+
+
+input,select,button{
+
+    font-size:16px;
+
+    margin:5px;
 
 }
