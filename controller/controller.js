@@ -1,30 +1,34 @@
 
-const canvas =
-document.getElementById("radar");
+const canvas = document.getElementById("radar");
+const ctx = canvas.getContext("2d");
 
 
-const ctx =
-canvas.getContext("2d");
+function drawControllerRadar(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
 
+    drawBackground();
 
-ctx.fillStyle="#001100";
+    drawRoutes();
 
-ctx.fillRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
+    drawRunway();
+
+    drawTrafficCircuit();
+
+    drawCentreline();
+
+    drawCCB();
 
 
+    requestAnimationFrame(drawControllerRadar);
 
-ctx.fillStyle="#00ff66";
+}
 
-ctx.font="20px Arial";
 
-ctx.fillText(
-"SCC RADAR CONTROLLER",
-250,
-450
-);
+drawControllerRadar();
