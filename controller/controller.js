@@ -1,36 +1,9 @@
-// ======================================
-// Controller Radar
-// ======================================
-
-console.log("Controller aircraft code loaded");
-let controllerAircraft = [
-
-    {
-        callsign:"ETH773",
-
-        x:450,
-        y:300,
-
-        level:50,
-
-        assignedLevel:"",
-
-        heading:260,
-
-        speed:220
-    }
-
-];
+console.log("NEW CONTROLLER FILE RUNNING");
 
 
+function drawControllerRadar(){
 
-// ======================================
-// Draw Controller Aircraft Label
-// ======================================
-
-function drawControllerAircraft(){
-
-    console.log("DRAW AIRCRAFT RUNNING");
+    console.log("RADAR LOOP RUNNING");
 
 
     ctx.fillStyle = "red";
@@ -46,76 +19,6 @@ function drawControllerAircraft(){
     );
 
     ctx.fill();
-
-}
-
-// ======================================
-// Controller Radar Loop
-// ======================================
-
-function drawControllerRadar(){
-
-
-    ctx.clearRect(
-
-        0,
-        0,
-        canvas.width,
-        canvas.height
-
-    );
-
-
-    drawBackground();
-
-    drawRoutes();
-
-    drawRunway();
-
-    drawTrafficCircuit();
-
-    drawCentreline();
-
-    drawCCB();
-
-
-
-    drawControllerAircraft();
-
-
-
-    requestAnimationFrame(
-        drawControllerRadar
-    );
-
-}
-
-
-drawControllerRadar();
-
-
-
-function drawControllerRadar(){
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    drawBackground();
-
-    drawRoutes();
-
-    drawRunway();
-
-    drawTrafficCircuit();
-
-    drawCentreline();
-
-    drawCCB();
 
 
     requestAnimationFrame(drawControllerRadar);
