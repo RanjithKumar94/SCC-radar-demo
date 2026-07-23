@@ -1,6 +1,5 @@
 
-const canvas = document.getElementById("radar");
-const ctx = canvas.getContext("2d");
+
 
 
 function drawControllerRadar(){
