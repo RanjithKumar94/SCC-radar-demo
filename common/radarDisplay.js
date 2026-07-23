@@ -7,6 +7,8 @@ const PIXELS_PER_NM = RADAR_RADIUS / MAX_RANGE;
 function nm(value){
     return value * PIXELS_PER_NM;
 }
+const CENTER_X = canvas.width / 2;
+const CENTER_Y = canvas.height / 2;
 // CCB VOR
 const CCB = {
     x: CENTER_X,
