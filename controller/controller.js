@@ -1,4 +1,4 @@
-alert("COMMON RADAR LOADED");
+
 
 
 
