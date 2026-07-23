@@ -205,7 +205,33 @@ function drawControllerRadar(){
 
 }
 
+// ======================================
+// Controller Level Assignment
+// ======================================
 
+document.getElementById("sendLevel").onclick = function(){
+
+
+    const level =
+    document.getElementById("assignedLevel").value;
+
+
+    if(level === "")
+        return;
+
+
+    controllerAircraft[0].assignedLevel =
+    "FL" + level;
+
+
+    console.log(
+        "Assigned level:",
+        controllerAircraft[0].callsign,
+        controllerAircraft[0].assignedLevel
+    );
+
+
+};
 
 // Start
 
