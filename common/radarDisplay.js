@@ -1,35 +1,62 @@
-
 // ======================================
 // Common Radar Display
 // ======================================
+
 
 const canvas = document.getElementById("radar");
 const ctx = canvas.getContext("2d");
 
 
 // Radar Size
+
 const RADAR_RADIUS = 380;
 const MAX_RANGE = 60;
-const PIXELS_PER_NM = RADAR_RADIUS / MAX_RANGE;
+
+const PIXELS_PER_NM =
+RADAR_RADIUS / MAX_RANGE;
+
 
 
 function nm(value){
+
     return value * PIXELS_PER_NM;
+
 }
 
 
 // Radar Centre
-const CENTER_X = canvas.width / 2;
-const CENTER_Y = canvas.height / 2;
+
+const CENTER_X =
+canvas.width / 2;
+
+
+const CENTER_Y =
+canvas.height / 2;
+
 
 
 // CCB VOR
+
 const CCB = {
 
-    x: CENTER_X,
-    y: CENTER_Y + 3
+    x:CENTER_X,
+    y:CENTER_Y + 3
 
 };
+
+
+
+// Colours
+
+const BG_COLOR = "#001100";
+const RING_COLOR = "#00aa44";
+const ROUTE_COLOR = "#00ff66";
+const TEXT_COLOR = "#00ff66";
+
+
+
+// ATS Routes
+
 const ROUTES = [
 
     {name:"B425", bearing:190},
@@ -42,183 +69,384 @@ const ROUTES = [
 
 ];
 
-function bearingToXY(bearing, distance){
 
-    const angle = (bearing - 90) * Math.PI / 180;
 
-    const scale = RADAR_RADIUS / MAX_RANGE;
+// Convert Bearing Distance to XY
+
+function bearingToXY(bearing,distance){
+
+    const angle =
+    (bearing - 90) *
+    Math.PI / 180;
+
 
     return {
 
-        x: CCB.x + Math.cos(angle) * distance * scale,
+        x:
+        CCB.x +
+        Math.cos(angle) *
+        distance *
+        PIXELS_PER_NM,
 
-        y: CCB.y + Math.sin(angle) * distance * scale
+
+        y:
+        CCB.y +
+        Math.sin(angle) *
+        distance *
+        PIXELS_PER_NM
 
     };
 
 }
 
-// ======================================
+
+
 // Radar Background
-// ======================================
 
 function drawBackground(){
 
     ctx.fillStyle = BG_COLOR;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
 
     ctx.strokeStyle = RING_COLOR;
+
     ctx.lineWidth = 1;
+
+
 
     for(let i=10;i<=60;i+=10){
 
+
         ctx.beginPath();
 
+
         ctx.arc(
+
             CCB.x,
             CCB.y,
-            i * RADAR_RADIUS / MAX_RANGE,
+
+            i * PIXELS_PER_NM,
+
             0,
-            Math.PI * 2
+            Math.PI*2
+
         );
+
 
         ctx.stroke();
 
     }
+
 }
+
+
+
+// Runway
 
 function drawRunway(){
 
-    const p1 = bearingToXY(260,10);
-    const p2 = bearingToXY(80,10);
+    const p1 =
+    bearingToXY(260,10);
 
-    ctx.strokeStyle = "#FFFFFF";
-    ctx.lineWidth = 4;
+
+    const p2 =
+    bearingToXY(80,10);
+
+
+
+    ctx.strokeStyle="#FFFFFF";
+
+    ctx.lineWidth=4;
+
 
     ctx.beginPath();
-    ctx.moveTo(p1.x,p1.y);
-    ctx.lineTo(p2.x,p2.y);
+
+    ctx.moveTo(
+        p1.x,
+        p1.y
+    );
+
+
+    ctx.lineTo(
+        p2.x,
+        p2.y
+    );
+
+
     ctx.stroke();
 
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "16px Arial";
 
-    ctx.fillText("08",p1.x-22,p1.y+8);
-    ctx.fillText("26",p2.x+8,p2.y+8);
+
+    ctx.fillStyle="#FFFFFF";
+
+    ctx.font="16px Arial";
+
+
+    ctx.fillText(
+        "08",
+        p1.x-22,
+        p1.y+8
+    );
+
+
+    ctx.fillText(
+        "26",
+        p2.x+8,
+        p2.y+8
+    );
 
 }
 
 
+
+// Centreline
+
 function drawCentreline(){
 
-    const start = bearingToXY(260,15);
-    const end   = bearingToXY(80,15);
+
+    const start =
+    bearingToXY(260,15);
+
+
+    const end =
+    bearingToXY(80,15);
+
+
 
     ctx.save();
 
+
     ctx.strokeStyle="#FFFF00";
+
     ctx.lineWidth=2;
+
     ctx.setLineDash([10,6]);
 
+
+
     ctx.beginPath();
-    ctx.moveTo(start.x,start.y);
-    ctx.lineTo(end.x,end.y);
+
+    ctx.moveTo(
+        start.x,
+        start.y
+    );
+
+
+    ctx.lineTo(
+        end.x,
+        end.y
+    );
+
+
     ctx.stroke();
+
+
 
     ctx.restore();
 
 }
 
+
+
+// Traffic Circuit
+
 function drawTrafficCircuit(){
-    const end08 = bearingToXY(260,12);
-    const end26 = bearingToXY(80,12);
-    const dx = end26.x - end08.x;
-    const dy = end26.y - end08.y;
-    const len = Math.sqrt(dx*dx + dy*dy);
 
-    const px = -dy / len;
-    const py = dx / len;
+    const end08 =
+    bearingToXY(260,12);
 
-    const offset = nm(5);
 
-    const top08 = {
-        x:end08.x + px*offset,
-        y:end08.y + py*offset
+    const end26 =
+    bearingToXY(80,12);
+
+
+
+    const dx =
+    end26.x-end08.x;
+
+
+    const dy =
+    end26.y-end08.y;
+
+
+    const len =
+    Math.sqrt(dx*dx+dy*dy);
+
+
+
+    const px =
+    -dy/len;
+
+
+    const py =
+    dx/len;
+
+
+
+    const offset =
+    nm(5);
+
+
+
+    const top08={
+        x:end08.x+px*offset,
+        y:end08.y+py*offset
     };
 
-    const top26 = {
-        x:end26.x + px*offset,
-        y:end26.y + py*offset
+
+    const top26={
+        x:end26.x+px*offset,
+        y:end26.y+py*offset
     };
 
-    const bot08 = {
-        x:end08.x - px*offset,
-        y:end08.y - py*offset
+
+    const bot08={
+        x:end08.x-px*offset,
+        y:end08.y-py*offset
     };
 
-    const bot26 = {
-        x:end26.x - px*offset,
-        y:end26.y - py*offset
+
+    const bot26={
+        x:end26.x-px*offset,
+        y:end26.y-py*offset
     };
+
+
 
     ctx.strokeStyle="#FFFF00";
+
     ctx.lineWidth=2;
 
-    // Upper box
+
+
     ctx.beginPath();
+
     ctx.moveTo(end08.x,end08.y);
+
     ctx.lineTo(top08.x,top08.y);
+
     ctx.lineTo(top26.x,top26.y);
+
     ctx.lineTo(end26.x,end26.y);
+
     ctx.stroke();
 
-    // Lower box
+
+
     ctx.beginPath();
+
     ctx.moveTo(end08.x,end08.y);
+
     ctx.lineTo(bot08.x,bot08.y);
+
     ctx.lineTo(bot26.x,bot26.y);
+
     ctx.lineTo(end26.x,end26.y);
+
     ctx.stroke();
 
 }
+
+
+
+// CCB
 
 function drawCCB(){
 
+
     ctx.beginPath();
-    ctx.arc(CCB.x,CCB.y,4,0,Math.PI*2);
+
+    ctx.arc(
+        CCB.x,
+        CCB.y,
+        4,
+        0,
+        Math.PI*2
+    );
+
 
     ctx.fillStyle="#00FFFF";
+
     ctx.fill();
 
-    ctx.font="16px Arial";
-    ctx.fillStyle="#00FFFF";
 
-    ctx.fillText("CCB",CCB.x+8,CCB.y-8);
+    ctx.font="16px Arial";
+
+    ctx.fillText(
+        "CCB",
+        CCB.x+8,
+        CCB.y-8
+    );
 
 }
 
-// ======================================
-// Draw ATS Routes
-// ======================================
+
+
+// Routes
 
 function drawRoutes(){
 
-    ctx.strokeStyle=ROUTE_COLOR;
+
+    ctx.strokeStyle =
+    ROUTE_COLOR;
+
+
     ctx.lineWidth=2;
+
+
 
     ROUTES.forEach(route=>{
 
-        const end = bearingToXY(route.bearing,60);
+
+        const end =
+        bearingToXY(
+            route.bearing,
+            60
+        );
+
+
 
         ctx.beginPath();
-        ctx.moveTo(CCB.x,CCB.y);
-        ctx.lineTo(end.x,end.y);
+
+        ctx.moveTo(
+            CCB.x,
+            CCB.y
+        );
+
+
+        ctx.lineTo(
+            end.x,
+            end.y
+        );
+
+
         ctx.stroke();
 
-        const label = bearingToXY(route.bearing,56);
 
-        ctx.fillStyle = TEXT_COLOR;
-        ctx.font = "15px Consolas";
+
+        const label =
+        bearingToXY(
+            route.bearing,
+            56
+        );
+
+
+
+        ctx.fillStyle =
+        TEXT_COLOR;
+
+
+        ctx.font =
+        "15px Consolas";
+
+
 
         ctx.fillText(
             route.name,
@@ -226,7 +454,7 @@ function drawRoutes(){
             label.y
         );
 
+
     });
 
 }
-
