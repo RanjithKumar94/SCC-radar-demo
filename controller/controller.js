@@ -30,122 +30,24 @@ let controllerAircraft = [
 
 function drawControllerAircraft(){
 
-console.log("Drawing aircraft");
- controllerAircraft.forEach(ac=>{
-
-    
-        console.log(ac.callsign);
-   
-
-        // aircraft dot
-
-        ctx.fillStyle="#00FF00";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            ac.x,
-            ac.y,
-            5,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
+    console.log("DRAW AIRCRAFT RUNNING");
 
 
+    ctx.fillStyle = "red";
 
-        // label position
+    ctx.beginPath();
 
-        const labelX =
-        ac.x + 15;
+    ctx.arc(
+        450,
+        300,
+        10,
+        0,
+        Math.PI * 2
+    );
 
-
-        const labelY =
-        ac.y - 15;
-
-
-
-        ctx.fillStyle="#00FF00";
-
-        ctx.font="14px Consolas";
-
-        ctx.textAlign="left";
-
-
-
-        // Callsign
-
-        ctx.fillText(
-
-            ac.callsign,
-
-            labelX,
-
-            labelY
-
-        );
-
-
-
-        // Level line
-
-        let levelText;
-
-
-        if(ac.assignedLevel !== ""){
-
-            levelText =
-            "FL" +
-            ac.level +
-            "  " +
-            ac.assignedLevel;
-
-        }
-
-        else{
-
-            levelText =
-            "FL" +
-            ac.level;
-
-        }
-
-
-
-        ctx.fillText(
-
-            levelText,
-
-            labelX,
-
-            labelY + 16
-
-        );
-
-
-
-        // Heading + speed
-
-        ctx.fillText(
-
-            ac.heading +
-            "  " +
-            ac.speed,
-
-            labelX,
-
-            labelY + 32
-
-        );
-
-
-    });
-
+    ctx.fill();
 
 }
-
-
 
 // ======================================
 // Controller Radar Loop
