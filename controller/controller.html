@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
 
 <title>SCC Radar Controller</title>
-<link rel="stylesheet" href="controller.css">
 
 <link rel="stylesheet" href="controller.css">
 
@@ -15,10 +13,62 @@
 <body>
 
 
+<div id="layout">
+
+
+<div>
+
 <canvas id="radar" width="900" height="900"></canvas>
 
+</div>
 
-<script src="../common/radarDisplay.js"></script>
+
+
+<div id="panel">
+
+
+<h2>ATC Controller</h2>
+
+
+<label>Aircraft</label>
+
+<select id="aircraftSelect">
+
+<option value="ETH773">
+ETH773
+</option>
+
+</select>
+
+
+<br><br>
+
+
+<label>Assigned Level</label>
+
+<input 
+id="assignedLevel"
+type="number"
+placeholder="030"
+>
+
+
+<br><br>
+
+
+<button id="sendLevel">
+SEND LEVEL
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<script src="../Common/radarDisplay.js"></script>
+
 <script src="controller.js"></script>
 
 
