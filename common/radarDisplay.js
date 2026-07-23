@@ -1,6 +1,3 @@
-// Canvas
-const canvas = document.getElementById("radar");
-const ctx = canvas.getContext("2d");
 
 // Radar Size
 const RADAR_RADIUS = 380;
