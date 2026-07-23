@@ -2,7 +2,7 @@
 // Controller Radar
 // ======================================
 
-
+console.log("Controller aircraft code loaded");
 let controllerAircraft = [
 
     {
