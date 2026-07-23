@@ -1,18 +1,34 @@
 
+// ======================================
+// Common Radar Display
+// ======================================
+
+const canvas = document.getElementById("radar");
+const ctx = canvas.getContext("2d");
+
+
 // Radar Size
 const RADAR_RADIUS = 380;
 const MAX_RANGE = 60;
 const PIXELS_PER_NM = RADAR_RADIUS / MAX_RANGE;
 
+
 function nm(value){
     return value * PIXELS_PER_NM;
 }
+
+
+// Radar Centre
 const CENTER_X = canvas.width / 2;
 const CENTER_Y = canvas.height / 2;
+
+
 // CCB VOR
 const CCB = {
+
     x: CENTER_X,
     y: CENTER_Y + 3
+
 };
 const ROUTES = [
 
