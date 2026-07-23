@@ -30,9 +30,12 @@ let controllerAircraft = [
 
 function drawControllerAircraft(){
 
+console.log("Drawing aircraft");
+ controllerAircraft.forEach(ac=>{
 
-    controllerAircraft.forEach(ac=>{
-
+    
+        console.log(ac.callsign);
+   
 
         // aircraft dot
 
