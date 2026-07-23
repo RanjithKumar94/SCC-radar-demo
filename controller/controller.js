@@ -210,7 +210,7 @@ function drawControllerRadar(){
 // ======================================
 
 document.getElementById("sendLevel").onclick = function(){
-
+console.log("Level button setup");
 
     const level =
     document.getElementById("assignedLevel").value;
